@@ -56,7 +56,7 @@ public class MainActivityFragment extends Fragment {
             }
 
             try {
-                return myApiService.sayHi("J").execute().getData();
+                return myApiService.sayHi().execute().getData();
             } catch (IOException e) {
                 return e.getMessage();
             }
