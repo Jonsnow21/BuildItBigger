@@ -75,7 +75,20 @@ public class MainActivityFragment extends Fragment {
 
     public String getJoke(Context c) {
         this.context = c;
-        mInterstitialAd = new InterstitialAd(c);
+        jokeAsyncTask jokeAsyncTask = new jokeAsyncTask();
+            try {
+                return jokeAsyncTask.execute().get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+                return e.getMessage();
+            }
+        }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_main, container, false);
+
+        mInterstitialAd = new InterstitialAd(getContext());
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
@@ -95,18 +108,8 @@ public class MainActivityFragment extends Fragment {
             }
         });
         mInterstitialAd.loadAd(requestNewInterstitial());
-        jokeAsyncTask jokeAsyncTask = new jokeAsyncTask();
-            try {
-                return jokeAsyncTask.execute().get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-                return e.getMessage();
-            }
-        }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_main, container, false);
+
+
         AdView mAdView = (AdView) root.findViewById(R.id.adView);
         // Create an ad request. Check logcat output for the hashed device ID to
         // get test ads on a physical device. e.g.
